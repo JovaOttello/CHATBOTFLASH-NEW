@@ -1,0 +1,176 @@
+<html><head><base href="https://flashusdt.com">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash USDT Chatbot - Full Screen</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  #chatbot-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  #chatbot-header {
+    background-color: #1e90ff;
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #chatbot-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  #chatbot-input {
+    display: flex;
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  #user-input {
+    flex-grow: 1;
+    border: 2px solid #1e90ff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    margin-right: 15px;
+    font-size: 16px;
+  }
+
+  #send-button {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  #send-button:hover {
+    background-color: #007bff;
+  }
+
+  .message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 80%;
+    font-size: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+
+  .user-message {
+    background-color: #e6f2ff;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .bot-message {
+    background-color: white;
+    align-self: flex-start;
+    border: 1px solid #e0e0e0;
+  }
+</style>
+</head>
+<body>
+
+<div id="chatbot-window">
+  <div id="chatbot-header">
+    Flash USDT Support
+  </div>
+  <div id="chatbot-messages"></div>
+  <div id="chatbot-input">
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button id="send-button">Send</button>
+  </div>
+</div>
+
+<script>
+const messagesContainer = document.getElementById('chatbot-messages');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+
+const botResponses = {
+  "greeting": "Hello and welcome to Flash USDT,\nOur Flash USDT is a unique solution, utilizing validator nodes on the ERC20 network to mask a token with the same contract as USDT. This enables it to function like USDT, being transferable, swappable, bridgeable, p2p sellable, etc.",
+  "verification": "This is the real thing, We have a Trial Plan for you.\nThe trial license costs $65, You get 300 FLASH USDT erc20, I will send you all the information below\n*Trial License*",
+  "conversion": "You can send the coin to any Platform Like Binance, Kraken, Coinbase or any cold wallet.\nThe Blockchain network believes that it's a real USDT erc20.\nYou can convert the USDT to any currencies you would like in the Exchange wallet you choose to use.",
+  "license": "After the payment, I'll promptly generate your License Key and Activation Code. Activator, Receive your access credentials, and then proceed to our Flash wallet to initiate transfers:\n\nI'm waiting for your payment confirmation to generate your license details.\nJust send me the block scan URL or a screenshot of the transfer so I can check.",
+  "access": "You'll have 24 hours of access to your wallet after activating it\nDon't forget that you're running on *ERC20 network*\nThe coin will not be traceable for 1 year, You can convert it Immediately after transferring it to your private wallet or Exchange to any Crypto you want.",
+  "start": "Choose a License plan you want, Make the payment, You can do it here, I can assist you, Or you can do it by yourself- Click on ACCESS NOW, choose the License you want to buy, Click on PURCHASE, A popup window with your Wallet address to make the payment will appear, Notice that you have 35 minutes to complete the payment.\nAfter the money has been sent, You will get your wallet address to your WhatsApp or to your Email."
+};
+
+function addMessage(content, isUser = false) {
+  const messageElement = document.createElement('div');
+  messageElement.classList.add('message');
+  messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
+  messageElement.textContent = content;
+  messagesContainer.appendChild(messageElement);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function getBotResponse(userMessage) {
+  userMessage = userMessage.toLowerCase();
+  if (userMessage.match(/\b(hi|hello|hey)\b/)) {
+    return botResponses.greeting;
+  } else if (userMessage.match(/\b(scam|real|really|trial|is this real|its a scam|this is a scam)\b/)) {
+    return botResponses.verification;
+  } else if (userMessage.match(/\b(convert|converting|transfer|send|can i convert|how to convert|how to transfer|how to send|exchange|platform)\b/)) {
+    return botResponses.conversion;
+  } else if (userMessage.match(/\b(license|when i get the license|how to get a license)\b/)) {
+    return botResponses.license;
+  } else if (userMessage.match(/\b(how much time|access wallet|access|time)\b/)) {
+    return botResponses.access;
+  } else if (userMessage.match(/\b(how to start|start|make payment|payment|get start|get started)\b/)) {
+    return botResponses.start;
+  } else {
+    return "I'm sorry, I didn't understand that. Could you please rephrase your question or try using keywords related to our service, licensing, conversion, or how to get started with Flash USDT?";
+  }
+}
+
+function handleUserInput() {
+  const userMessage = userInput.value.trim();
+  if (userMessage) {
+    addMessage(userMessage, true);
+    userInput.value = '';
+    setTimeout(() => {
+      const botResponse = getBotResponse(userMessage);
+      addMessage(botResponse);
+    }, 500);
+  }
+}
+
+sendButton.addEventListener('click', handleUserInput);
+
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    handleUserInput();
+  }
+});
+
+// Initial bot message
+addMessage("Hello! How can I assist you today? Feel free to ask about Flash USDT, our trial plan, licensing, conversion, or how to get started with our service.");
+</script>
+</body>
+</html>
